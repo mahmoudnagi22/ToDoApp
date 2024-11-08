@@ -1,46 +1,56 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:to_do_app/core/colors_manager.dart';
+import 'package:to_do_app/core/utils/date_utils.dart';
+import 'package:to_do_app/database_manager/model/todo_dm.dart';
+import 'package:to_do_app/database_manager/model/user_dm.dart';
+import 'package:to_do_app/screens/add_task_bottom_sheet/add_task_bottom_sheet.dart';
 
 class TaskItem extends StatelessWidget {
-  const TaskItem({super.key});
+  Function onDeletedTask;
+  Function(TodoDM) onUpdate;
+
+  //int index;
+   TaskItem({super.key , required  this.todo , required this.onDeletedTask  , required this.onUpdate});
+  TodoDM todo;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-decoration: BoxDecoration(
+      decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: Colors.white,
+        color:Theme.of(context).indicatorColor,
       ),
-
-
       margin: EdgeInsets.all(8),
       child: Slidable(
-
-        startActionPane:  ActionPane(
+        startActionPane: ActionPane(
           extentRatio: 0.2,
           // A motion is a widget used to control how the pane animates.
           motion: const DrawerMotion(),
 
           // A pane can dismiss the Slidable.
-          dismissible: DismissiblePane(onDismissed: () {}),
+          //    Error : dismissible: DismissiblePane(onDismissed: () {}),
 
           // All actions are defined in the children parameter.
-          children:  [
+          children: [
             // A SlidableAction can have an icon and/or a label.
             SlidableAction(
               autoClose: true,
               borderRadius: BorderRadius.circular(15),
-
               onPressed: (context) {
-
+                deletTask();
+                onDeletedTask();
               },
               backgroundColor: Color(0xFFFE4A49),
               foregroundColor: Colors.white,
               icon: Icons.delete,
               label: 'Delete',
             ),
-
           ],
         ),
         endActionPane: ActionPane(
@@ -50,17 +60,17 @@ decoration: BoxDecoration(
           motion: const DrawerMotion(),
 
           // A pane can dismiss the Slidable.
-          dismissible: DismissiblePane(onDismissed: () {}),
-
           // All actions are defined in the children parameter.
-          children:  [
+          children: [
             // A SlidableAction can have an icon and/or a label.
             SlidableAction(
               autoClose: true,
-
               borderRadius: BorderRadius.circular(15),
               flex: 1,
               onPressed: (context) {
+               // onReadTask(todo);
+                AddTaskBottomSheet.show(context, todo: todo);
+                onUpdate(todo);
 
               },
               backgroundColor: Theme.of(context).primaryColor,
@@ -68,16 +78,13 @@ decoration: BoxDecoration(
               icon: Icons.edit,
               label: 'Edit',
             ),
-
           ],
         ),
-
         child: Card(
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12,horizontal: 8),
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start ,
-
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
                   color: Theme.of(context).dividerColor,
@@ -90,18 +97,27 @@ decoration: BoxDecoration(
                 Column(
                   children: [
                     Text(
-                      "TASK TITEL",
-                      style: Theme.of(context).textTheme.titleMedium,),
+                      todo.title,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    Text(
+                      todo.description,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
                     SizedBox(height: 12),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start ,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Icon(Icons.punch_clock),
+                        Padding(
+                          padding: const EdgeInsets.only(right:  10),
+                          child: Icon(Icons.lock_clock ,color: Theme.of(context).canvasColor,),
+                        ),
                         Text(
-                          "10:30",
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: Colors.black,
-                          ),
+                          '${todo.date.day}/${todo.date.month}/${todo.date.year}',
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    color: Theme.of(context).canvasColor,
+                                  ),
                         ),
                       ],
                     ),
@@ -109,13 +125,16 @@ decoration: BoxDecoration(
                 ),
                 Spacer(),
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 4,horizontal: 14),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: BorderRadius.circular(10),
-
-                  ),
-                    child: Icon(Icons.check , color: Colors.white,size: 28,)),
+                    padding: EdgeInsets.symmetric(vertical: 4, horizontal: 14),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Icon(
+                      Icons.check,
+                      color: Colors.white,
+                      size: 28,
+                    )),
               ],
             ),
           ),
@@ -123,4 +142,21 @@ decoration: BoxDecoration(
       ),
     );
   }
+
+  void deletTask()async {
+   var tasksCollection = FirebaseFirestore.instance.collection(UserDM.collectionName).doc(UserDM.user!.id).collection(TodoDM.collectionName);
+     await tasksCollection.doc(todo.id).delete();
+
+  }
+  // void onReadTask(TodoDM todo) async {
+  //  var readData= await FirebaseFirestore.instance.collection(UserDM.collectionName).doc(UserDM.user!.id).collection(TodoDM.collectionName).get();
+  //  var user = readData.docs.firstWhere((doc) => doc.id == todo.id);
+  //  //var user =  readData.docs[todo.id];
+  //  //  print("$index");
+  //  //  print("$end  : <= end");
+  //  print(user['title']);
+  //  print(user['description']);
+  //
+  // }
+  //void onEditTask() {}
 }
