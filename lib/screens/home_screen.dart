@@ -15,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int selectedindex = 0;
-String appBarTitele= "ToDo List";
+
 GlobalKey<TasksTabState> taskesTabKey = GlobalKey();
   List<Widget> tabs =[];
   @override
@@ -31,10 +31,11 @@ GlobalKey<TasksTabState> taskesTabKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
+    final appBarTitele = selectedindex == 0 ? AppLocalizations.of(context)!.todo_List : AppLocalizations.of(context)!.settings;
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
-        title:  Text(AppLocalizations.of(context)!.todo_List),
+        title:  Text(appBarTitele),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -70,12 +71,6 @@ GlobalKey<TasksTabState> taskesTabKey = GlobalKey();
       onTap: (index) {
         setState(() {
           selectedindex = index;
-          if(index == 0 ){
-            appBarTitele = AppLocalizations.of(context)!.todo_List;
-          }else{
-            appBarTitele = AppLocalizations.of(context)!.settings;
-
-          }
         });
       },
       items:  [

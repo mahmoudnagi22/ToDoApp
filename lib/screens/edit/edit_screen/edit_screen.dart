@@ -8,6 +8,7 @@ import 'package:to_do_app/database_manager/model/todo_dm.dart';
 import 'package:to_do_app/database_manager/model/user_dm.dart';
 import 'package:to_do_app/screens/home_screen.dart';
 import 'package:to_do_app/screens/taps/taskes_tab/tasks_tab.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditScreen extends StatefulWidget {
   final TodoDM? todo;
@@ -35,7 +36,7 @@ class _EditScreenState extends State<EditScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:Text(StringsManager.editTitle) ,
+        title:Text(AppLocalizations.of(context)!.edit_task) ,
       ),
       body: Center(
         child: Form(
@@ -47,12 +48,12 @@ class _EditScreenState extends State<EditScreen> {
             height: 617,
             decoration: BoxDecoration(
              borderRadius: BorderRadius.circular(15),
-              color: ColorsManager.whiteColor,
+              color: Theme.of(context).indicatorColor,
             ),
             child:  Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text( StringsManager.editTitle,
+                Text( AppLocalizations.of(context)!.edit_task,
                     //"Add New Task",
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headlineMedium),
@@ -62,13 +63,13 @@ class _EditScreenState extends State<EditScreen> {
                 TextFormField(
                   validator: (input) {
                     if (input == null || input.trim().isEmpty) {
-                      return "Plz ,enter Title";
+                      return AppLocalizations.of(context)!.enter_task_title;
                     }
                     return null;
                   },
                  controller: titleController,
                   decoration: InputDecoration(
-                    hintText: "Enter task title",
+                    hintText: AppLocalizations.of(context)!.enter_task_title,
                     hintStyle: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ),
@@ -78,13 +79,13 @@ class _EditScreenState extends State<EditScreen> {
                 TextFormField(
                   validator: (input) {
                     if (input == null || input.trim().isEmpty) {
-                      return "Plz ,enter description";
+                      return AppLocalizations.of(context)!.enter_task_description;
                     }
                     return null;
                   },
                   controller: descriptionController,
                   decoration: InputDecoration(
-                    hintText: "Enter task description",
+                    hintText: AppLocalizations.of(context)!.enter_task_description,
                     hintStyle: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ),
@@ -92,7 +93,7 @@ class _EditScreenState extends State<EditScreen> {
                   height: 20,
                 ),
                 Text(
-                  "Select date ",
+                  AppLocalizations.of(context)!.select_date,
                   style: Theme.of(context).textTheme.headlineLarge,
                 ),
                 const SizedBox(
@@ -119,7 +120,7 @@ class _EditScreenState extends State<EditScreen> {
                    taskTabKey.currentState?.readToosFromFireStore();
                    // readDataProvider.readTodosFromFirestore();
                   },
-                  child: Text( "Save Changes"),
+                  child: Text( AppLocalizations.of(context)!.save_changed),
                   //child: Text( "Add Task" ),
                 ),
               ],

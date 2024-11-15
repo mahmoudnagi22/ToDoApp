@@ -24,6 +24,10 @@
   "tasks": "Tasks",
   "settings": "Settings",
   "theme": "Theme",
+  "enter_task_title": "enter task title",
+  "enter_task_description": "enter task description",
+  "edit_task": "Edit Task",
+  "save_changed": "Save Changes",
   "language": "Language",
   "english": "english",
   "arabic": "arabic"
