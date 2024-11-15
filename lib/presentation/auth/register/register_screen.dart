@@ -8,7 +8,7 @@ import 'package:to_do_app/core/routes_manager.dart';
 import 'package:to_do_app/core/strings_manager.dart';
 import 'package:to_do_app/core/utils/dialog_utils.dart';
 import 'package:to_do_app/database_manager/model/user_dm.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({super.key});
   TextEditingController fullNameController = TextEditingController();
@@ -35,7 +35,7 @@ class RegisterScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
-                      "Full Name",
+                      AppLocalizations.of(context)!.full_name,
                       style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 14,
@@ -45,10 +45,10 @@ class RegisterScreen extends StatelessWidget {
                       height: 12,
                     ),
                     CustomTextFormField(
-                      hintText: "enter your full name",
+                      hintText: AppLocalizations.of(context)!.enter_yor_full_name,
                       validatot: (input) {
                         if (input == null || input.trim().isEmpty) {
-                          return 'Please enter full name';
+                          return AppLocalizations.of(context)!.enter_yor_full_name;
                         }
                         if (input.length < 6) {
                           return 'Invalid input';
@@ -59,7 +59,7 @@ class RegisterScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: Text(
-                        "User Name",
+                        AppLocalizations.of(context)!.user_name,
                         style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 14,
@@ -70,10 +70,10 @@ class RegisterScreen extends StatelessWidget {
                       height: 12,
                     ),
                     CustomTextFormField(
-                      hintText: "enter user name",
+                      hintText: AppLocalizations.of(context)!.enter_yor_user_name,
                       validatot: (input) {
                         if (input == null || input.trim().isEmpty) {
-                          return 'Please enter user name';
+                          return AppLocalizations.of(context)!.enter_yor_user_name;
                         }
                         if (input.length < 6) {
                           return 'Invalid input';
@@ -84,7 +84,7 @@ class RegisterScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: Text(
-                        " E-mail",
+                        AppLocalizations.of(context)!.email,
                         style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 14,
@@ -95,10 +95,10 @@ class RegisterScreen extends StatelessWidget {
                       height: 12,
                     ),
                     CustomTextFormField(
-                      hintText: "enter your email-address",
+                      hintText: AppLocalizations.of(context)!.enter_your_email,
                       validatot: (input) {
                         if (input == null || input.trim().isEmpty) {
-                          return 'Please enter  email address';
+                          return AppLocalizations.of(context)!.enter_your_email;
                         }
                         if (input.length < 6) {
                           return 'Invalid input';
@@ -109,7 +109,7 @@ class RegisterScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: Text(
-                        "Password",
+                        AppLocalizations.of(context)!.password,
                         style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 14,
@@ -120,10 +120,10 @@ class RegisterScreen extends StatelessWidget {
                       height: 12,
                     ),
                     CustomTextFormField(
-                      hintText: "enter your Password",
+                      hintText:AppLocalizations.of(context)!.enter_yor_password,
                       validatot: (input) {
                         if (input == null || input.trim().isEmpty) {
-                          return 'Please enter password';
+                          return AppLocalizations.of(context)!.enter_yor_password;
                         }
                         if (input.length < 6) {
                           return 'Short password ';
@@ -135,7 +135,7 @@ class RegisterScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: Text(
-                        "Re-Password",
+                        AppLocalizations.of(context)!.re_password,
                         style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 14,
@@ -146,10 +146,10 @@ class RegisterScreen extends StatelessWidget {
                       height: 12,
                     ),
                     CustomTextFormField(
-                      hintText: "Confirm p\Password",
+                      hintText: AppLocalizations.of(context)!.re_password,
                       validatot: (input) {
                         if (input == null || input.trim().isEmpty) {
-                          return 'Please enter password';
+                          return AppLocalizations.of(context)!.re_password;
                         }
                         if (input.length < 6) {
                           return 'Short password ';
@@ -170,7 +170,7 @@ class RegisterScreen extends StatelessWidget {
                         onPressed: () {
                           signUp(context);
                         },
-                        child: Text(StringsManager.signUp,
+                        child: Text(AppLocalizations.of(context)!.sign_up,
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 20,
@@ -182,7 +182,7 @@ class RegisterScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Already have Account? ",
+                          AppLocalizations.of(context)!.already_have_account,
                           style: TextStyle(
                               fontSize: 14,
                               color: Colors.white,
@@ -194,7 +194,7 @@ class RegisterScreen extends StatelessWidget {
                                 context, RoutesManager.loginRoute);
                           },
                           child: Text(
-                            StringsManager.signIn,
+                            AppLocalizations.of(context)!.sign_up,
                             style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.white,

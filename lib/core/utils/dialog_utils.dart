@@ -11,7 +11,7 @@ class DialogUtils {
       context: context,
       builder: (context) {
         return CupertinoAlertDialog(
-          title: Text("Titel"),
+          title: Text(message ?? ""),
           content: Row(
             children: [
               Text(message ?? ""),

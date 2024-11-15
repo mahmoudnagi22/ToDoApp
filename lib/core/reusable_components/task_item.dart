@@ -6,14 +6,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:to_do_app/core/colors_manager.dart';
+import 'package:to_do_app/core/routes_manager.dart';
 import 'package:to_do_app/core/utils/date_utils.dart';
 import 'package:to_do_app/database_manager/model/todo_dm.dart';
 import 'package:to_do_app/database_manager/model/user_dm.dart';
 import 'package:to_do_app/screens/add_task_bottom_sheet/add_task_bottom_sheet.dart';
-
+import 'package:to_do_app/screens/edit/edit_screen/edit_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class TaskItem extends StatelessWidget {
   Function onDeletedTask;
-  Function(TodoDM) onUpdate;
+  Function onUpdate;
 
   //int index;
    TaskItem({super.key , required  this.todo , required this.onDeletedTask  , required this.onUpdate});
@@ -21,6 +23,7 @@ class TaskItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
@@ -49,7 +52,7 @@ class TaskItem extends StatelessWidget {
               backgroundColor: Color(0xFFFE4A49),
               foregroundColor: Colors.white,
               icon: Icons.delete,
-              label: 'Delete',
+              label: AppLocalizations.of(context)!.delete,
             ),
           ],
         ),
@@ -68,15 +71,19 @@ class TaskItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(15),
               flex: 1,
               onPressed: (context) {
-               // onReadTask(todo);
-                AddTaskBottomSheet.show(context, todo: todo);
-                onUpdate(todo);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditScreen(todo: todo),
+                  ),
+
+                );
 
               },
               backgroundColor: Theme.of(context).primaryColor,
               foregroundColor: Colors.white,
               icon: Icons.edit,
-              label: 'Edit',
+              label: AppLocalizations.of(context)!.edit,
             ),
           ],
         ),
@@ -146,17 +153,22 @@ class TaskItem extends StatelessWidget {
   void deletTask()async {
    var tasksCollection = FirebaseFirestore.instance.collection(UserDM.collectionName).doc(UserDM.user!.id).collection(TodoDM.collectionName);
      await tasksCollection.doc(todo.id).delete();
+  }
+  void onReadTask(TodoDM todo) async {
+    var readData = await FirebaseFirestore.instance
+        .collection(UserDM.collectionName)
+        .doc(UserDM.user!.id)
+        .collection(TodoDM.collectionName)
+        .get();
+    var user = readData.docs.firstWhere((doc) => doc.id == todo.id);
+    //onUpdateTask();
+    //var user =  readData.docs[todo.id];
+    //  print("$index");
+    //  print("$end  : <= end");
+    print(user['title']);
+    print('----------------------------');
+    print(user['description']);
 
   }
-  // void onReadTask(TodoDM todo) async {
-  //  var readData= await FirebaseFirestore.instance.collection(UserDM.collectionName).doc(UserDM.user!.id).collection(TodoDM.collectionName).get();
-  //  var user = readData.docs.firstWhere((doc) => doc.id == todo.id);
-  //  //var user =  readData.docs[todo.id];
-  //  //  print("$index");
-  //  //  print("$end  : <= end");
-  //  print(user['title']);
-  //  print(user['description']);
-  //
-  // }
-  //void onEditTask() {}
+
 }

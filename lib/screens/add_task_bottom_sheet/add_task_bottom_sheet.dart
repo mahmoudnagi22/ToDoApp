@@ -4,9 +4,10 @@ import 'package:to_do_app/core/utils/date_utils.dart';
 import 'package:to_do_app/database_manager/model/todo_dm.dart';
 import 'package:to_do_app/database_manager/model/user_dm.dart';
 import 'package:to_do_app/screens/taps/taskes_tab/tasks_tab.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class AddTaskBottomSheet extends StatefulWidget {
   final TodoDM? todo;
+ // final GlobalKey<TasksTabState>? taskesTabKey = GlobalKey();
   AddTaskBottomSheet({super.key , required this.todo });
   @override
   State<AddTaskBottomSheet> createState() => _AddTaskBottomSheetState();
@@ -48,8 +49,8 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(widget.todo == null ? "Add New Task" : "Edit Task",
-                  //"Add New Task",
+              Text(//widget.todo == null ? "Add New Task" : "Edit Task",
+                  AppLocalizations.of(context)!.add_new_task,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headlineMedium),
               const SizedBox(
@@ -88,7 +89,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                 height: 20,
               ),
               Text(
-                "Select date ",
+                AppLocalizations.of(context)!.select_date,
                 style: Theme.of(context).textTheme.headlineLarge,
               ),
               const SizedBox(
@@ -110,13 +111,13 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                 onPressed: () {
                   // addTodoToFireStore();
                   // widget.todo == null ? addTodoToFireStore() : onReadTask(widget.todo);
-                  widget.todo == null
-                      ? addTodoToFireStore()
-                      : onUpdateTask();
+                 // widget.todo == null
+                       addTodoToFireStore();
+
 
                 },
-                child: Text(widget.todo == null ? "Add Task" : "Save Changes"),
-                //child: Text( "Add Task" ),
+               // child: Text(widget.todo == null ? "Add Task" : "Save Changes"),
+                child: Text( AppLocalizations.of(context)!.add_task ),
               ),
             ],
           ),
@@ -155,14 +156,9 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
     doc.set(todo.toJson()).then(
       (_) {
        // Navigator.pop(context);
-        if (mounted) {
           Navigator.pop(context);
-        }
       },
     ).timeout(Duration(milliseconds: 500), onTimeout: () {
-      if (mounted) {
-        Navigator.pop(context);
-      }
     });
   }
 
@@ -180,6 +176,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
     print(user['title']);
     print('----------------------------');
     print(user['description']);
+
   }
 
   void onUpdateTask() async {
@@ -197,8 +194,8 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
     }).then((_) {
       if (mounted) {
         Navigator.pop(context);
-
       }
+
      // Navigator.pop(context);
     }).catchError((error) {
       print("Error updating task: $error");
