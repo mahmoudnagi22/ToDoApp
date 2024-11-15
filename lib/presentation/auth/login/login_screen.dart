@@ -9,7 +9,7 @@ import 'package:to_do_app/core/routes_manager.dart';
 import 'package:to_do_app/core/strings_manager.dart';
 import 'package:to_do_app/core/utils/dialog_utils.dart';
 import 'package:to_do_app/database_manager/model/user_dm.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class LoginScreen extends StatefulWidget {
    LoginScreen({super.key});
 
@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: Text(
-                        " E-mail",
+                        AppLocalizations.of(context)!.email,
                         style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 14,
@@ -58,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: Text(
-                        "Password",
+                        AppLocalizations.of(context)!.password,
                         style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 14,
@@ -84,10 +84,10 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
 Widget buildEmailFiled() =>CustomTextFormField(
-  hintText: "enter your email-address",
+  hintText: AppLocalizations.of(context)!.enter_your_email,
   validatot: (input) {
     if (input == null || input.trim().isEmpty) {
-      return 'Please enter  email address';
+      return AppLocalizations.of(context)!.enter_yor_password;
     }
     if (input.length < 6) {
       return 'Invalid input';
@@ -97,10 +97,10 @@ Widget buildEmailFiled() =>CustomTextFormField(
 );
 
 Widget buildPasswordFiled() => CustomTextFormField(
-  hintText: "enter your Password",
+  hintText: AppLocalizations.of(context)!.enter_yor_password,
   validatot: (input) {
     if (input == null || input.trim().isEmpty) {
-      return 'Please enter password';
+      return AppLocalizations.of(context)!.enter_yor_password;
     }
     if (input.length < 6) {
       return 'Short password ';
@@ -121,7 +121,7 @@ Widget loginBottom() => Padding(
     onPressed: () {
 signIp(context);
     },
-    child: Text(StringsManager.signIn,
+    child: Text(AppLocalizations.of(context)!.sign_in,
         style: TextStyle(
           fontWeight: FontWeight.w600,
           fontSize: 20,
@@ -134,7 +134,7 @@ Widget registerBottom() =>  Row(
   mainAxisAlignment: MainAxisAlignment.center,
   children: [
     Text(
-      " Dont have Account  ",
+      AppLocalizations.of(context)!.dont_have_account,
       style: TextStyle(
           fontSize: 14,
           color: Colors.white,
@@ -145,7 +145,7 @@ Widget registerBottom() =>  Row(
         Navigator.pushReplacementNamed(context, RoutesManager.registerRoute);
       },
       child: Text(
-        StringsManager.signUp,
+        AppLocalizations.of(context)!.sign_up,
         style: TextStyle(
             fontSize: 16,
             color: Colors.white,
@@ -178,7 +178,7 @@ Widget registerBottom() =>  Row(
         message = AppConstant.wrongSignInMessage;
       }
       DialogUtils.showMessageDialog(context,
-          titel: "Error", content: message, posActionTitle: "ok");
+          titel: "Errommmr", content: message, posActionTitle: "ok");
     } catch (e) {
       DialogUtils.hideDialog(context);
       DialogUtils.showMessageDialog(context,

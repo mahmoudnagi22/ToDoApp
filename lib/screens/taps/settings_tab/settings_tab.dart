@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:to_do_app/core/colors_manager.dart';
 import 'package:to_do_app/provider/settings_proviider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsTab extends StatefulWidget {
   SettingsTab({super.key});
@@ -12,9 +13,6 @@ class SettingsTab extends StatefulWidget {
 }
 
 class _SettingsTabState extends State<SettingsTab> {
-  String? selectedTheme = 'Light';
-  String? selectedLanguage = 'English';
-
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<SettingsProvider>(context);
@@ -26,7 +24,7 @@ class _SettingsTabState extends State<SettingsTab> {
         children: [
           // Theme Selection
           Text(
-            'Theme',
+            AppLocalizations.of(context)!.theme,
             style: Theme.of(context).textTheme.labelSmall,
           ),
           const SizedBox(height: 8),
@@ -35,7 +33,6 @@ class _SettingsTabState extends State<SettingsTab> {
             width: double.infinity,
             height: 48,
             decoration: BoxDecoration(
-
               color: Theme.of(context).indicatorColor,
               border: Border.all(
                 color: Theme.of(context).dividerColor,
@@ -44,8 +41,11 @@ class _SettingsTabState extends State<SettingsTab> {
             ),
             child: Row(
               children: [
+                // Display the selected theme in the same place as DropdownButton
                 Text(
-                  selectedTheme ?? '',
+                  provider.currentTheme == ThemeMode.light
+                      ? AppLocalizations.of(context)!.light
+                      : AppLocalizations.of(context)!.dark,
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     fontWeight: FontWeight.w400,
                     color: Theme.of(context).primaryColor,
@@ -54,7 +54,7 @@ class _SettingsTabState extends State<SettingsTab> {
                 const Spacer(),
                 DropdownButton<String>(
                   underline: SizedBox.shrink(),
-dropdownColor: ColorsManager.whiteColor,
+                  dropdownColor: ColorsManager.whiteColor,
                   iconDisabledColor: Colors.transparent,
                   iconEnabledColor: ColorsManager.blueColor,
                   isDense: false,
@@ -66,17 +66,19 @@ dropdownColor: ColorsManager.whiteColor,
                   elevation: 0,
                   padding: const EdgeInsets.all(0),
                   isExpanded: false,
-                  items: <String>['Light', 'Dark'].map((String value)  {
+                  items: <String>[AppLocalizations.of(context)!.light, AppLocalizations.of(context)!.dark]
+                      .map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
-
                     );
                   }).toList(),
                   onChanged: (newTheme) {
-                    provider.changeAppTheme(newTheme == 'Light' ? ThemeMode.light : ThemeMode.dark);
-                    selectedTheme = newTheme;
-
+                    provider.changeAppTheme(
+                      newTheme == AppLocalizations.of(context)!.light
+                          ? ThemeMode.light
+                          : ThemeMode.dark,
+                    );
                   },
                 ),
               ],
@@ -86,7 +88,7 @@ dropdownColor: ColorsManager.whiteColor,
 
           // Language Selection
           Text(
-            'Language',
+            AppLocalizations.of(context)!.language,
             style: Theme.of(context).textTheme.labelSmall,
           ),
           const SizedBox(height: 8),
@@ -103,8 +105,11 @@ dropdownColor: ColorsManager.whiteColor,
             ),
             child: Row(
               children: [
+                // Display the selected language in the same place as DropdownButton
                 Text(
-                  selectedLanguage ?? '',
+                  provider.isAppLanguageEn()
+                      ? AppLocalizations.of(context)!.english
+                      : AppLocalizations.of(context)!.arabic,
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     fontWeight: FontWeight.w400,
                     color: Theme.of(context).primaryColor,
@@ -125,16 +130,15 @@ dropdownColor: ColorsManager.whiteColor,
                   elevation: 0,
                   padding: const EdgeInsets.all(0),
                   isExpanded: false,
-                  items: <String>['English', 'Arabic'].map((String value) {
+                  items: <String>[AppLocalizations.of(context)!.english, AppLocalizations.of(context)!.arabic]
+                      .map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
                     );
                   }).toList(),
                   onChanged: (newLang) {
-                    setState(() {
-                      selectedLanguage = newLang;
-                    });
+                    provider.changeAppLanguage(newLang == AppLocalizations.of(context)!.english ? 'en' : 'ar');
                   },
                 ),
               ],

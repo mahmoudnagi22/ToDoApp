@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:to_do_app/core/colors_manager.dart';
+import 'package:to_do_app/presentation/auth/login/login_screen.dart';
 import 'package:to_do_app/screens/add_task_bottom_sheet/add_task_bottom_sheet.dart';
 import 'package:to_do_app/screens/taps/settings_tab/settings_tab.dart';
 import 'package:to_do_app/screens/taps/taskes_tab/tasks_tab.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
 
@@ -21,7 +23,7 @@ GlobalKey<TasksTabState> taskesTabKey = GlobalKey();
     // TODO: implement initState
     super.initState();
     tabs = [
-      TasksTab(key:   taskesTabKey,),
+      TasksTab(key: taskesTabKey,),
       SettingsTab(),
     ];
 
@@ -32,7 +34,18 @@ GlobalKey<TasksTabState> taskesTabKey = GlobalKey();
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
-        title:  Text(appBarTitele),
+        title:  Text(AppLocalizations.of(context)!.todo_List),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              onTap: () {
+                FirebaseAuth.instance.signOut();
+                Navigator.push(context, MaterialPageRoute(builder:(_)=> LoginScreen()));
+              },
+                child: Icon(Icons.logout)),
+          )
+        ],
       ),
       floatingActionButton: buildFab(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -46,7 +59,7 @@ GlobalKey<TasksTabState> taskesTabKey = GlobalKey();
   Widget buildFab() =>  FloatingActionButton(
 
     onPressed: ()  async{
-     await AddTaskBottomSheet.show(context);
+      await AddTaskBottomSheet.show(context );
      taskesTabKey.currentState?.readToosFromFireStore();
     },
     child:const Icon(Icons.add_task),
@@ -58,21 +71,21 @@ GlobalKey<TasksTabState> taskesTabKey = GlobalKey();
         setState(() {
           selectedindex = index;
           if(index == 0 ){
-            appBarTitele = "ToDo List";
+            appBarTitele = AppLocalizations.of(context)!.todo_List;
           }else{
-            appBarTitele = "Settings";  // Update app bar title when navigating to settings tab  // TODO: Implement settings screen to update this title when necessary  // Example:
+            appBarTitele = AppLocalizations.of(context)!.settings;
 
           }
         });
       },
-      items: const [
+      items:  [
         BottomNavigationBarItem(
           icon: Icon(Icons.list),
-          label: "Tasks",
+          label:AppLocalizations.of(context)!.tasks,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.settings),
-          label: "Settings",
+          label:AppLocalizations.of(context)!.settings,
         ),
       ]);
 }

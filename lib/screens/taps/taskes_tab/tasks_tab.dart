@@ -104,7 +104,6 @@ class TasksTabState extends State<TasksTab> {
               },
               onUpdate: (todo){
                 readToosFromFireStore();
-
               },
 
             ),

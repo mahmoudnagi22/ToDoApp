@@ -5,13 +5,19 @@ import 'package:to_do_app/my_app/my_app.dart';
 import 'package:to_do_app/provider/settings_proviider.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
-void main() async{
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
- // await FirebaseFirestore.instance.disableNetwork();
-  runApp(  ChangeNotifierProvider(
-      create: (context) => SettingsProvider(), child: MyApp()));
-}
 
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => SettingsProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
+}
