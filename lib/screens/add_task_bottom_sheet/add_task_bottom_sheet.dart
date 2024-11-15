@@ -59,13 +59,13 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
               TextFormField(
                 validator: (input) {
                   if (input == null || input.trim().isEmpty) {
-                    return "Plz ,enter Title";
+                    return AppLocalizations.of(context)!.enter_task_title;
                   }
                   return null;
                 },
                 controller: titleController,
                 decoration: InputDecoration(
-                  hintText: "Enter task title",
+                  hintText: AppLocalizations.of(context)!.enter_task_title,
                   hintStyle: Theme.of(context).textTheme.headlineSmall,
                 ),
               ),
@@ -75,13 +75,13 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
               TextFormField(
                 validator: (input) {
                   if (input == null || input.trim().isEmpty) {
-                    return "Plz ,enter description";
+                    return AppLocalizations.of(context)!.enter_task_description;
                   }
                   return null;
                 },
                 controller: descriptionController,
                 decoration: InputDecoration(
-                  hintText: "Enter task description",
+                  hintText: AppLocalizations.of(context)!.enter_task_description,
                   hintStyle: Theme.of(context).textTheme.headlineSmall,
                 ),
               ),

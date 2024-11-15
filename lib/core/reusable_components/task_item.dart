@@ -168,6 +168,7 @@ class TaskItem extends StatelessWidget {
     print(user['title']);
     print('----------------------------');
     print(user['description']);
+    print(user['date']);
 
   }
 
